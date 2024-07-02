@@ -18,7 +18,7 @@ namespace Ecommerce.Repositorio.Implementacion
             _dbContext = dbContext;
         }
 
-        public IQueryable<TModel> Get(Expression<Func<TModel, bool>>? filtro = null)
+        public IQueryable<TModel> Consulta(Expression<Func<TModel, bool>>? filtro = null)
         {
             IQueryable<TModel> consulta = (filtro == null) ? _dbContext.Set<TModel>(): _dbContext.Set<TModel>().Where(filtro);
             return consulta;
@@ -41,7 +41,7 @@ namespace Ecommerce.Repositorio.Implementacion
         }
 
 
-        public async Task<bool> Update(TModel model)
+        public async Task<bool> Edit(TModel model)
         {
             try
             {

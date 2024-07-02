@@ -3,6 +3,7 @@ using Ecommerce.Model.Models;
 using Ecommerce.Repositorio.DBcontext;
 using Ecommerce.Repositorio.Implementacion;
 using Ecommerce.Repositorio.Service;
+using Ecommerce.Utilidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -28,7 +29,8 @@ builder.Services.AddTransient(typeof(IGenericRepositorio<>), typeof(GenericoRepo
 //se conoce el model
 builder.Services.AddScoped<IVentaRepositorio, VentaRepositorio>();
 
-
+//autoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 
 var app = builder.Build();
