@@ -8,7 +8,7 @@ using Ecommerce.DTO;
 
 namespace Ecommerce.Service
 {
-    internal interface IUsuarioService
+    public interface IUsuarioService
     {
         Task<List<UsuarioDto>> Lista(string rol,string buscar);
         Task<UsuarioDto> Consulta(int id);

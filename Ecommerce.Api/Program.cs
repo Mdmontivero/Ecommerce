@@ -6,6 +6,9 @@ using Ecommerce.Repositorio.Service;
 using Ecommerce.Utilidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Ecommerce.Service;
+using Ecommerce.Service.implementacion;
+using Ecommerce.DTO;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +31,15 @@ builder.Services.AddTransient(typeof(IGenericRepositorio<>), typeof(GenericoRepo
 
 //se conoce el model
 builder.Services.AddScoped<IVentaRepositorio, VentaRepositorio>();
+builder.Services.AddScoped<IUsuarioService,UsuarioService>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<IProductoService,ProductoService>();
+builder.Services.AddScoped<IDashboardService,DashboardService>();
+builder.Services.AddScoped<IVentaServicio, VentaServicio>();
 
 //autoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
 
 
 var app = builder.Build();

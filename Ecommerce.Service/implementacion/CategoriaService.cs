@@ -11,47 +11,27 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Service.implementacion
 {
-    public class UsuarioService: IUsuarioService
+    public class CategoriaService:ICategoriaService
     {
-        private IGenericRepositorio<Usuario> _modeloRepositorio;
-        private  IMapper _mapper;
+        private IGenericRepositorio<Categoria> _modeloRepositorio;
+        private IMapper _mapper;
 
-        public UsuarioService(IGenericRepositorio<Usuario> modeloRepositorio, IMapper mapper)
+        public CategoriaService(IGenericRepositorio<Categoria> modeloRepositorio, IMapper mapper)
         {
             _modeloRepositorio = modeloRepositorio;
             _mapper = mapper;
         }
+    
 
-        public async Task<SesionDto> Autorizacion(LoginDto model)
+        public async Task<CategoriaDto> Create(CategoriaDto model)
         {
             try
             {
-                
-                var consulta = _modeloRepositorio.Consulta(p => p.Correo == model.Correo && p.Clave == model.Clave);
-                var fromDbModel = await consulta.FirstOrDefaultAsync();
-
-                if (fromDbModel != null)
-                {
-                    return _mapper.Map<SesionDto>(fromDbModel); 
-                }
-                throw new TaskCanceledException("No se encontro coincidencias");
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<UsuarioDto> Create(UsuarioDto model)
-        {
-            try
-            {
-                var dbModel = _mapper.Map<Usuario>(model);
+                var dbModel = _mapper.Map<Categoria>(model);
                 var respModelo = await _modeloRepositorio.Create(dbModel);
-                if (respModelo.IdUsuario != 0)
+                if (respModelo.IdCategoria != 0)
                 {
-                    return _mapper.Map<UsuarioDto>(respModelo);
+                    return _mapper.Map<CategoriaDto>(respModelo);
                 }
                 throw new TaskCanceledException("NO se puede crear");
 
@@ -62,18 +42,18 @@ namespace Ecommerce.Service.implementacion
                 throw ex;
             }
         }
-        public async Task<bool> Edit(UsuarioDto model)
+     
+
+        public async Task<bool> Edit(CategoriaDto model)
         {
             try
             {
-                var consulta = _modeloRepositorio.Consulta(p => p.IdUsuario == model.IdUsuario);
+                var consulta = _modeloRepositorio.Consulta(p => p.IdCategoria == model.IdCategoria);
                 var fromDbModel = await consulta.FirstOrDefaultAsync();
 
                 if (fromDbModel != null)
                 {
-                    fromDbModel.NombreCompleto = model.NombreCompleto;
-                    fromDbModel.Correo = model.Correo;
-                    fromDbModel.Clave = model.Clave;
+                    fromDbModel.Nombre = model.Nombre;
 
                     var respuesta = await _modeloRepositorio.Edit(fromDbModel);
 
@@ -86,7 +66,6 @@ namespace Ecommerce.Service.implementacion
                     {
                         return respuesta;
                     }
-
                 }
                 else
                 {
@@ -99,12 +78,11 @@ namespace Ecommerce.Service.implementacion
                 throw ex;
             }
         }
-
         public async Task<bool> Delete(int id)
         {
             try
             {
-                var consulta = _modeloRepositorio.Consulta(p => p.IdUsuario == id);
+                var consulta = _modeloRepositorio.Consulta(p => p.IdCategoria == id);
                 var fromDbModel = await consulta.FirstOrDefaultAsync();
 
                 if (fromDbModel != null)
@@ -122,8 +100,8 @@ namespace Ecommerce.Service.implementacion
                     }
 
                 }
-                else 
-                { 
+                else
+                {
                     throw new TaskCanceledException("No se encontro resultado");
                 }
             }
@@ -134,33 +112,15 @@ namespace Ecommerce.Service.implementacion
             }
         }
 
-     
-
-        public async Task<List<UsuarioDto>> Lista(string rol, string buscar)
+        public async Task<CategoriaDto> Consulta(int id)
         {
             try
             {
-                var consulta = _modeloRepositorio.Consulta(p => p.Rol == rol && string.Concat(p.NombreCompleto.ToLower(), p.Correo.ToLower()).Contains(buscar.ToLower()));
-
-                List<UsuarioDto> lista = _mapper.Map<List<UsuarioDto>>(await consulta.ToListAsync());
-                return lista;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-        public async Task<UsuarioDto> Consulta(int id)
-        {
-            try
-            {
-                var consulta = _modeloRepositorio.Consulta(p => p.IdUsuario == id);
-                var fromDbModel= await consulta.FirstOrDefaultAsync();
+                var consulta = _modeloRepositorio.Consulta(p => p.IdCategoria == id);
+                var fromDbModel = await consulta.FirstOrDefaultAsync();
                 if (fromDbModel != null)
                 {
-                    return _mapper.Map<UsuarioDto>(fromDbModel);
+                    return _mapper.Map<CategoriaDto>(fromDbModel);
                 }
                 else
                 {
@@ -175,6 +135,20 @@ namespace Ecommerce.Service.implementacion
             }
         }
 
-     
+        public async Task<List<CategoriaDto>> Lista( string buscar)
+        {
+            try
+            {
+                var consulta = _modeloRepositorio.Consulta(p => string.Concat(p.Nombre.ToLower()).Contains(buscar.ToLower()));
+
+                List<CategoriaDto> lista = _mapper.Map<List<CategoriaDto>>(await consulta.ToListAsync());
+                return lista;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }
