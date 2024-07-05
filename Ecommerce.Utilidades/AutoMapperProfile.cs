@@ -11,7 +11,7 @@ namespace Ecommerce.Utilidades
 {
     public class AutoMapperProfile : Profile
     {
-        protected AutoMapperProfile()
+        public AutoMapperProfile()
         {
             CreateMap<Usuario, UsuarioDto>();
             CreateMap<Usuario, SesionDto>();

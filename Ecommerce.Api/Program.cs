@@ -37,6 +37,13 @@ builder.Services.AddScoped<IProductoService,ProductoService>();
 builder.Services.AddScoped<IDashboardService,DashboardService>();
 builder.Services.AddScoped<IVentaServicio, VentaServicio>();
 
+//permite usar la api para cualquioer dominio
+builder.Services.AddCors(option => option.AddPolicy("NuevaPolitica",app=> 
+app.AllowAnyOrigin()
+.AllowAnyHeader()
+.AllowAnyMethod()
+));
+
 //autoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -50,6 +57,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//usar la api para cualquioer dominio
+app.UseCors("NuevaPolitica");
 
 app.UseHttpsRedirection();
 
